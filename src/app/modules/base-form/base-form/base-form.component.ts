@@ -24,6 +24,7 @@ export class BaseFormComponent implements AfterViewInit {
     this.formRef?.valueChanges?.pipe(debounceTime(50), first()).subscribe((e) => {
       const savedData = JSON.parse(localStorage.getItem(BaseFormComponent.LS_FORM_KEY) || '{}');
       this.formRef?.form.patchValue(savedData);
+      this.formRef?.form.markAllAsTouched();
       this.formRef?.form.updateValueAndValidity();
     });
   }
