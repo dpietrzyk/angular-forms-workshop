@@ -1,1 +1,86 @@
-<p>base-form works!</p>
+<form class="group" (ngSubmit)="onSubmit(formRef)" #formRef="ngForm">
+
+  <div class="group" ngModelGroup="userData" #userData="ngModelGroup">
+    <label>
+      name*:
+      <input type="text" #nameRef="ngModel" ngModel name="name" required minlength="5" />
+
+      <span
+        *ngIf="nameRef.touched && nameRef.errors?.required"
+        class="error-message">
+      This field is required
+    </span>
+    </label>
+
+    <label>
+      e-mail*:
+      <input type="email" #emailRef="ngModel" ngModel name="email" required email
+             [class.dashed-border]="emailRef.invalid && emailRef.touched" />
+
+      <span
+        *ngIf="emailRef.touched && emailRef.errors?.required"
+        class="error-message">
+      This field is required
+    </span>
+
+      <span
+        *ngIf="emailRef.touched && emailRef.errors?.email"
+        class="error-message">
+      This should be correct email address
+    </span>
+    </label>
+  </div>
+
+  <label>
+    phone:
+    <input type="number" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{4}$" />
+
+    <span
+      *ngIf="phoneRef.touched && phoneRef.errors"
+      class="error-message">
+      Your phone should math 000-000-000 format
+    </span>
+  </label>
+
+  <label>
+    country:
+    <select ngModel name="country">
+      <option value="pol" selected>Poland</option>
+      <option value="non-pol">Not poland</option>
+    </select>
+  </label>
+
+  <label>
+    newsletter:
+
+    <input type="checkbox" ngModel name="newsletter" />
+  </label>
+
+  <div class="label">
+    sex:
+
+    <div>
+      <label>
+        <input type="radio" ngModel value="male" name="sex" checked />
+        male
+      </label>
+
+      <label>
+        <input type="radio" ngModel value="female" name="sex" />
+        female
+      </label>
+    </div>
+  </div>
+
+  <label>
+    details:
+
+    <textarea [(ngModel)]="details" name="description"></textarea>
+  </label>
+
+  <p>{{details}}</p>
+
+  <input type="submit" value="Submit" [disabled]="formRef.invalid" />
+  <input type="button" value="Clear" (click)="clearForm()" />
+</form>
+
