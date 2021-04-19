@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BaseFormModule } from './modules/base-form/base-form.module';
+import { ExtendedFormModule } from './modules/extended-form/extended-form.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { BaseFormModule } from './modules/base-form/base-form.module';
   imports: [
     BrowserModule,
     BaseFormModule,
+    ExtendedFormModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
