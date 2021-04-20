@@ -29,4 +29,8 @@ form {
     width: 100%;
     color: red;
   }
+
+  &.error-extra-gap {
+    left: calc(100% + 3rem);
+  }
 }
