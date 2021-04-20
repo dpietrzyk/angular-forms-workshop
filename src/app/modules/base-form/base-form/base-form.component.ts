@@ -15,33 +15,41 @@ export class BaseFormComponent implements AfterViewInit {
 
   details = '';
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.restoreDataAfterFormInit();
     this.saveDataAfterChange();
-  }
-
-  private restoreDataAfterFormInit(): void {
-    this.formRef?.valueChanges?.pipe(debounceTime(50), first()).subscribe((e) => {
-      const savedData = JSON.parse(localStorage.getItem(BaseFormComponent.LS_FORM_KEY) || '{}');
-      this.formRef?.form.patchValue(savedData);
-      this.formRef?.form.markAllAsTouched();
-      this.formRef?.form.updateValueAndValidity();
-    });
-  }
-
-  private saveDataAfterChange(): void {
-    this.formRef?.valueChanges?.pipe(debounceTime(50)).subscribe((e) => {
-      localStorage.setItem(BaseFormComponent.LS_FORM_KEY, JSON.stringify(e));
-      console.log(e);
-    });
   }
 
   onSubmit(form: NgForm): void {
     console.log(form.form);
   }
 
-  public clearForm(): void {
+  clearForm(): void {
     this.formRef?.resetForm();
+    localStorage.removeItem(BaseFormComponent.LS_FORM_KEY);
   }
 
+  private restoreDataAfterFormInit(): void {
+    this.formRef?.valueChanges?.pipe(debounceTime(50), first()).subscribe(() => {
+      const savedRawData = localStorage.getItem(BaseFormComponent.LS_FORM_KEY);
+      if (!savedRawData) {
+        return;
+      }
+
+      const savedData = JSON.parse(savedRawData);
+      this.formRef?.form.patchValue(savedData);
+      this.formRef?.form.markAllAsTouched();
+    });
+  }
+
+  private saveDataAfterChange(): void {
+    this.formRef?.valueChanges?.pipe(debounceTime(50)).subscribe((e) => {
+      if (this.formRef?.pristine) {
+        return;
+      }
+
+      localStorage.setItem(BaseFormComponent.LS_FORM_KEY, JSON.stringify(e));
+      console.log(e);
+    });
+  }
 }

@@ -7,7 +7,7 @@
 
       <span
         *ngIf="nameRef.touched && nameRef.errors?.required"
-        class="error-message">
+        class="error-message error-extra-gap">
       This field is required
     </span>
     </label>
@@ -19,13 +19,13 @@
 
       <span
         *ngIf="emailRef.touched && emailRef.errors?.required"
-        class="error-message">
+        class="error-message error-extra-gap">
       This field is required
     </span>
 
       <span
         *ngIf="emailRef.touched && emailRef.errors?.email"
-        class="error-message">
+        class="error-message error-extra-gap">
       This should be correct email address
     </span>
     </label>
@@ -33,7 +33,7 @@
 
   <label>
     phone:
-    <input type="number" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{4}$" />
+    <input type="text" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{3}$" />
 
     <span
       *ngIf="phoneRef.touched && phoneRef.errors"

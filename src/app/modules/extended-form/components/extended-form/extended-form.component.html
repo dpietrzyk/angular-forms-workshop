@@ -1,1 +1,103 @@
-<p>extended-form works!</p>
+<form class="group" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div class="group" formGroupName="userData">
+    <label>
+      name*:
+      <input type="text" formControlName="name" />
+
+      <span
+        *ngIf="shouldShowError('userData.name', 'required')"
+        class="error-message error-extra-gap">
+      This field is required
+    </span>
+
+      <span
+        *ngIf="shouldShowError('userData.name', 'invalidUsername')"
+        class="error-message error-extra-gap">
+      This name is invalid
+    </span>
+
+    </label>
+
+    <label>
+      e-mail*:
+      <input type="email" formControlName="email"
+             [class.dashed-border]="isInvalidAndTouched('userData.email')" />
+
+      <span
+        *ngIf="shouldShowError('userData.email', 'required')"
+        class="error-message error-extra-gap">
+      This field is required
+    </span>
+
+      <span
+        *ngIf="shouldShowError('userData.email', 'email')"
+        class="error-message error-extra-gap">
+      This should be correct email address
+    </span>
+    </label>
+  </div>
+
+  <label>
+    phone:
+    <input type="text" formControlName="phone" />
+
+    <span
+      *ngIf="shouldShowError('phone', 'pattern')"
+      class="error-message">
+      Your phone should math 000-000-000 format
+    </span>
+  </label>
+
+  <label>
+    country:
+    <select formControlName="country">
+      <option value="pol" selected>Poland</option>
+      <option value="non-pol">Not poland</option>
+    </select>
+  </label>
+
+  <label>
+    newsletter:
+
+    <input type="checkbox" formControlName="newsletter" />
+  </label>
+
+  <div class="label">
+    sex:
+
+    <div>
+      <label>
+        <input type="radio" value="male" formControlName="sex" checked />
+        male
+      </label>
+
+      <label>
+        <input type="radio" value="female" formControlName="sex" />
+        female
+      </label>
+    </div>
+  </div>
+
+  <label>
+    details:
+
+    <textarea formControlName="description"></textarea>
+  </label>
+
+  <p>{{ form.get('description')?.value }}</p>
+
+  <div *ngIf="friends.length" class="group" formArrayName="friends">
+    <label *ngFor="let friend of friends; let i = index">
+      friend {{ i + 1 }}*:
+
+      <input type="text" [formControlName]="i" />
+    </label>
+  </div>
+
+  <button type="button" (click)="addFriend()">Add friend</button>
+
+  <input type="submit" value="Submit" [disabled]="form.invalid" />
+  <input type="button" value="Clear" (click)="clearForm()" />
+</form>
+
