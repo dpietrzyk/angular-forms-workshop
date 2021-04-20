@@ -15,7 +15,7 @@ export class BaseFormComponent implements AfterViewInit {
 
   details = '';
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.restoreDataAfterFormInit();
     this.saveDataAfterChange();
   }
