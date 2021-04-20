@@ -33,7 +33,7 @@
 
   <label>
     phone:
-    <input type="number" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{4}$" />
+    <input type="text" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{3}$" />
 
     <span
       *ngIf="phoneRef.touched && phoneRef.errors"
