@@ -3,7 +3,7 @@
   <div class="group" ngModelGroup="userData" #userData="ngModelGroup">
     <label>
       name*:
-      <input type="text" #nameRef="ngModel" ngModel name="name" required minlength="5" />
+      <input type="text" #nameRef="ngModel" ngModel name="name" required />
 
       <span
         *ngIf="nameRef.touched && nameRef.errors?.required"
@@ -33,13 +33,7 @@
 
   <label>
     phone:
-    <input type="text" #phoneRef="ngModel" ngModel name="phone" pattern="\d{3}-\d{3}-\d{3}$" />
-
-    <span
-      *ngIf="phoneRef.touched && phoneRef.errors"
-      class="error-message">
-      Your phone should match 000-000-000 format
-    </span>
+    <input type="text" ngModel name="phone" />
   </label>
 
   <label>
