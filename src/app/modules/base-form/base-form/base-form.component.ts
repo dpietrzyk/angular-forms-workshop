@@ -26,6 +26,7 @@ export class BaseFormComponent implements AfterViewInit {
 
   clearForm(): void {
     this.formRef?.resetForm();
+    localStorage.removeItem(BaseFormComponent.LS_FORM_KEY);
   }
 
   private restoreDataAfterFormInit(): void {
