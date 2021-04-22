@@ -10,6 +10,12 @@
         class="error-message error-extra-gap">
             This field is required
           </span>
+
+      <span
+        *ngIf="shouldShowError('userData.name', 'nameNotAllowed')"
+        class="error-message error-extra-gap">
+            This name is not allowed!
+          </span>
     </label>
 
     <label>

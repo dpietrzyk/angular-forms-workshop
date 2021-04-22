@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from './validators/custom-validators';
 
 @Component({
   selector: 'app-extended-form',
@@ -9,11 +10,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ExtendedFormComponent implements OnInit {
   private static readonly LS_FORM_KEY = 'saved-form';
 
-  details = '';
+  private forbiddenNames = ['admin'];
 
   form: FormGroup = new FormGroup({
     userData: new FormGroup({
-      name: new FormControl('', Validators.required),
+      name: new FormControl('',
+        [
+          Validators.required,
+          // this.isAllowedName.bind(this),
+          CustomValidators.isAllowedName,
+        ]),
       email: new FormControl('',
         [Validators.required, Validators.email],
       ),
@@ -44,6 +50,14 @@ export class ExtendedFormComponent implements OnInit {
     return control?.touched && control?.errors?.[errorName];
   }
 
+  // private isAllowedName(control: AbstractControl): ValidationErrors | null {
+  //   if (this.forbiddenNames.includes(control.value)) {
+  //     return { nameNotAllowed: true };
+  //   }
+  //
+  //   return null;
+  // }
+
   private restoreDataFromStorage(): void {
     const savedDataRaw = localStorage.getItem(ExtendedFormComponent.LS_FORM_KEY);
     if (!savedDataRaw) {
@@ -63,6 +77,7 @@ export class ExtendedFormComponent implements OnInit {
 
       localStorage.setItem(ExtendedFormComponent.LS_FORM_KEY, JSON.stringify(val));
       console.log(val);
+      console.log(this.form);
     });
   }
 }
