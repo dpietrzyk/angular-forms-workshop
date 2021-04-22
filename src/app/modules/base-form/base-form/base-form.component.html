@@ -80,8 +80,7 @@
 
   <p>{{details}}</p>
 
-<!--  [disabled]="formRef.invalid" -->
-  <input type="submit" value="Submit"  />
+  <input type="submit" value="Submit" [disabled]="formRef.invalid" />
   <input type="button" value="Clear" (click)="clearForm()" />
 </form>
 

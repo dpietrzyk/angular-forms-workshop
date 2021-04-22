@@ -3,8 +3,7 @@
   <div class="group" formGroupName="userData">
     <label>
       name*:
-      <!-- required -->
-      <input type="text" formControlName="name" />
+      <input type="text" formControlName="name"/>
 
       <!--      <span-->
       <!--        *ngIf="nameRef.touched && nameRef.errors?.required"-->
@@ -15,9 +14,8 @@
 
     <label>
       e-mail*:
-      <!--      required email-->
       <!-- [class.dashed-border]="emailRef.invalid && emailRef.touched" -->
-      <input type="email" />
+      <input type="email" formControlName="email" />
 
       <!--      <span-->
       <!--        *ngIf="emailRef.touched && emailRef.errors?.required"-->
@@ -36,7 +34,7 @@
   <label>
     phone:
     <!-- pattern="\d{3}-\d{3}-\d{3}$" -->
-    <input type="text" />
+    <input type="text" formControlName="phone" />
 
     <!--<span
       *ngIf="phoneRef.errors?.pattern"
@@ -47,7 +45,7 @@
 
   <label>
     country:
-    <select name="country">
+    <select formControlName="country">
       <option value="pol" selected>Poland</option>
       <option value="non-pol">Not poland</option>
     </select>
@@ -56,7 +54,7 @@
   <label>
     newsletter:
 
-    <input type="checkbox" />
+    <input type="checkbox" formControlName="newsletter" />
   </label>
 
   <div class="label">
@@ -64,12 +62,12 @@
 
     <div>
       <label>
-        <input type="radio" value="male" />
+        <input type="radio" formControlName="sex" value="male" />
         male
       </label>
 
       <label>
-        <input type="radio" value="female" />
+        <input type="radio" formControlName="sex" value="female" />
         female
       </label>
     </div>
@@ -79,13 +77,13 @@
     details:
 
     <!-- [(ngModel)]="details" -->
-    <textarea name="description"></textarea>
+    <textarea formControlName="description"></textarea>
   </label>
 
   <p>{{ details }}</p>
 
   <!--  [disabled]="formRef.invalid" -->
-  <input type="submit" value="Submit" />
+  <input type="submit" value="Submit" [disabled]="form.invalid" />
   <input type="button" value="Clear" (click)="clearForm()" />
 </form>
 
