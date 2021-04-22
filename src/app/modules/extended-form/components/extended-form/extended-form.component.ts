@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CustomValidators } from './validators/custom-validators';
+import { Observable } from 'rxjs';
+import { FakeApiService } from '../../services/fake-api/fake-api.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-extended-form',
@@ -10,7 +13,11 @@ import { CustomValidators } from './validators/custom-validators';
 export class ExtendedFormComponent implements OnInit {
   private static readonly LS_FORM_KEY = 'saved-form';
 
-  private forbiddenNames = ['admin'];
+  // private forbiddenNames = ['admin'];
+
+  constructor(
+    private readonly fakeApi: FakeApiService,
+  ) { }
 
   form: FormGroup = new FormGroup({
     userData: new FormGroup({
@@ -19,7 +26,9 @@ export class ExtendedFormComponent implements OnInit {
           Validators.required,
           // this.isAllowedName.bind(this),
           CustomValidators.isAllowedName,
-        ]),
+        ],
+        this.isNotRegisterUser.bind(this),
+      ),
       email: new FormControl('',
         [Validators.required, Validators.email],
       ),
@@ -57,6 +66,14 @@ export class ExtendedFormComponent implements OnInit {
   //
   //   return null;
   // }
+
+  private isNotRegisterUser(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return this.fakeApi
+      .isAllowedName(control.value)
+      .pipe(
+        map(isAllowedName => isAllowedName ? null : { registeredUser: true }),
+      );
+  }
 
   private restoreDataFromStorage(): void {
     const savedDataRaw = localStorage.getItem(ExtendedFormComponent.LS_FORM_KEY);

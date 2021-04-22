@@ -18,6 +18,10 @@ form {
     border-color: red;
   }
 
+  .ng-pending {
+    box-shadow: 0 0 5px 5px;
+  }
+
   .dashed-border {
     border-style: dashed;
   }

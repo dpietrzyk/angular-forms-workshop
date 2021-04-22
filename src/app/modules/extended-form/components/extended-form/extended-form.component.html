@@ -16,6 +16,12 @@
         class="error-message error-extra-gap">
             This name is not allowed!
           </span>
+
+      <span
+        *ngIf="shouldShowError('userData.name', 'registeredUser')"
+        class="error-message error-extra-gap">
+            This user is registered!
+          </span>
     </label>
 
     <label>
