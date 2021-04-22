@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-extended-form',
@@ -6,4 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./extended-form.component.scss'],
 })
 
-export class ExtendedFormComponent {}
+export class ExtendedFormComponent {
+  details = '';
+
+  form: FormGroup = new FormGroup({
+    userData: new FormGroup({
+      name: new FormControl(''),
+    }),
+  });
+
+  onSubmit(): void {
+    console.log(this.form);
+  }
+
+  clearForm(): void {
+    console.log('clearForm');
+    this.form.reset();
+  }
+}

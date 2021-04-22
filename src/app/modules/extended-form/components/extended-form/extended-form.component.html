@@ -1,2 +1,91 @@
-<p>Extended form works!</p>
+<form class="group" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div class="group" formGroupName="userData">
+    <label>
+      name*:
+      <!-- required -->
+      <input type="text" formControlName="name" />
+
+      <!--      <span-->
+      <!--        *ngIf="nameRef.touched && nameRef.errors?.required"-->
+      <!--        class="error-message error-extra-gap">-->
+      <!--      This field is required-->
+      <!--    </span>-->
+    </label>
+
+    <label>
+      e-mail*:
+      <!--      required email-->
+      <!-- [class.dashed-border]="emailRef.invalid && emailRef.touched" -->
+      <input type="email" />
+
+      <!--      <span-->
+      <!--        *ngIf="emailRef.touched && emailRef.errors?.required"-->
+      <!--        class="error-message error-extra-gap">-->
+      <!--      This field is required-->
+      <!--    </span>-->
+
+      <!--      <span-->
+      <!--        *ngIf="emailRef.touched && emailRef.errors?.email"-->
+      <!--        class="error-message error-extra-gap">-->
+      <!--      This should be correct email address-->
+      <!--    </span>-->
+    </label>
+  </div>
+
+  <label>
+    phone:
+    <!-- pattern="\d{3}-\d{3}-\d{3}$" -->
+    <input type="text" />
+
+    <!--<span
+      *ngIf="phoneRef.errors?.pattern"
+      class="error-message error-extra-gap">
+      You must follow 000-000-000 pattern
+    </span>-->
+  </label>
+
+  <label>
+    country:
+    <select name="country">
+      <option value="pol" selected>Poland</option>
+      <option value="non-pol">Not poland</option>
+    </select>
+  </label>
+
+  <label>
+    newsletter:
+
+    <input type="checkbox" />
+  </label>
+
+  <div class="label">
+    sex:
+
+    <div>
+      <label>
+        <input type="radio" value="male" />
+        male
+      </label>
+
+      <label>
+        <input type="radio" value="female" />
+        female
+      </label>
+    </div>
+  </div>
+
+  <label>
+    details:
+
+    <!-- [(ngModel)]="details" -->
+    <textarea name="description"></textarea>
+  </label>
+
+  <p>{{ details }}</p>
+
+  <!--  [disabled]="formRef.invalid" -->
+  <input type="submit" value="Submit" />
+  <input type="button" value="Clear" (click)="clearForm()" />
+</form>
 
