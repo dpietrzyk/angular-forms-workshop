@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, V
 import { CustomValidators } from './validators/custom-validators';
 import { Observable } from 'rxjs';
 import { FakeApiService } from '../../services/fake-api/fake-api.service';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-extended-form',
@@ -48,6 +48,7 @@ export class ExtendedFormComponent implements OnInit {
   ngOnInit(): void {
     this.restoreDataFromStorage();
     this.saveDataToStorageOnFormChange();
+    this.formatPhoneOnInputChange();
   }
 
   onSubmit(): void {
@@ -111,8 +112,40 @@ export class ExtendedFormComponent implements OnInit {
       }
 
       localStorage.setItem(ExtendedFormComponent.LS_FORM_KEY, JSON.stringify(val));
-      console.log(val);
-      console.log(this.form);
     });
+  }
+
+  private formatPhoneOnInputChange(): void {
+    const control = this.form.get('phone');
+    if (!control) {
+      return;
+    }
+
+    control.valueChanges.pipe(
+      distinctUntilChanged(),
+      map(val => this.formatPhoneNumber(val)),
+    ).subscribe((formattedPhoneNumber) =>
+      control.patchValue(formattedPhoneNumber),
+    );
+  }
+
+  // 000-000-000 => 000000000 => 000-000-000
+  // 123-456-789 => 123456789 => 123-456-789
+  private formatPhoneNumber(val: string): string {
+    // '' + '1';
+    // '1' + '2'
+    // '12' + '3'
+    // '123' + '4'
+    // '123-4' + '5'
+
+    const shouldShipPrefix = (phoneNumber: string) => (phoneNumber.length + 1) % 4;
+    const prefixIfNeeded = (phoneNumber: string) => shouldShipPrefix(phoneNumber) ? '' : '-';
+    const formatNumber = (phoneNumber: string, digt: string) => phoneNumber + prefixIfNeeded(phoneNumber) + digt;
+
+    return val
+      .replaceAll('-', '')
+      .slice(0, 9)
+      .split('')
+      .reduce(formatNumber, '');
   }
 }
