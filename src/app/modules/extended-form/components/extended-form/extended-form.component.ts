@@ -36,6 +36,12 @@ export class ExtendedFormComponent implements OnInit {
 
   clearForm(): void {
     this.form.reset();
+    localStorage.removeItem(ExtendedFormComponent.LS_FORM_KEY);
+  }
+
+  shouldShowError(name: string, errorName: string): boolean {
+    const control = this.form.get(name);
+    return control?.touched && control?.errors?.[errorName];
   }
 
   private restoreDataFromStorage(): void {
