@@ -95,6 +95,17 @@
 
   <p>{{ form.get('description')?.value }}</p>
 
+  <div class="group" *ngIf="friends?.controls?.length" formArrayName="friends">
+
+    <label *ngFor="let friend of friends?.controls; let i = index">
+      friend {{ i + 1 }}:
+
+      <input type="text" [formControlName]="i" />
+    </label>
+
+  </div>
+
+  <input type="button" value="Add friend" (click)="addFriend()" />
   <input type="submit" value="Submit" [disabled]="form.invalid" />
   <input type="button" value="Clear" (click)="clearForm()" />
 </form>

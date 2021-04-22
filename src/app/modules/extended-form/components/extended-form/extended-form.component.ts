@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CustomValidators } from './validators/custom-validators';
 import { Observable } from 'rxjs';
 import { FakeApiService } from '../../services/fake-api/fake-api.service';
@@ -38,7 +38,12 @@ export class ExtendedFormComponent implements OnInit {
     newsletter: new FormControl(false),
     sex: new FormControl('female'),
     description: new FormControl(''),
+    friends: new FormArray([]),
   });
+
+  get friends(): FormArray | undefined {
+    return (this.form.get('friends') as FormArray | undefined);
+  }
 
   ngOnInit(): void {
     this.restoreDataFromStorage();
@@ -51,12 +56,19 @@ export class ExtendedFormComponent implements OnInit {
 
   clearForm(): void {
     this.form.reset();
+    this.friends?.clear();
     localStorage.removeItem(ExtendedFormComponent.LS_FORM_KEY);
   }
 
   shouldShowError(name: string, errorName: string): boolean {
     const control = this.form.get(name);
     return control?.touched && control?.errors?.[errorName];
+  }
+
+  addFriend(): void {
+    const friends: FormArray | null = (this.form.get('friends') as FormArray | null);
+    const friendControl = new FormControl('', Validators.required);
+    friends?.push(friendControl);
   }
 
   // private isAllowedName(control: AbstractControl): ValidationErrors | null {
@@ -82,6 +94,12 @@ export class ExtendedFormComponent implements OnInit {
     }
 
     const savedData = JSON.parse(savedDataRaw);
+    const friends = savedData?.friends || [];
+
+    for (const friend of friends) {
+      this.addFriend();
+    }
+
     this.form.patchValue(savedData);
     this.form.markAllAsTouched();
   }
